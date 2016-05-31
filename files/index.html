@@ -7,13 +7,23 @@
     <link rel="stylesheet" href="default.css">
   </head>
   <body>
-    <div class="container">
+    <div class="container-fluid ">
       <div class="row">
-        <img src="images/amazon-logo.png" alt="amazon-logo" class="img img responsive" width="125" height="125"/>
+        <div class="col-md-12">
+          <img src="images/top-bar.jpg" alt="explore bar" calss="img img-responsive imgWidth" />
+        </div>
+        <div class="col-md-1">
+         <img src="images/amazon-logo.png" alt="amazon-logo" class="img img-responsive" />
+        </div>
       </div>
+      <form class="col-md-8 col-md-offset-2">
+        <div class="form-group searchBar">
+          <input id= "searchText" class="form-group" type="text" name="term" value="">
+          <button id="search" class="btn btn-warning" type="button" name="button">search</button>
+        </div>
+
+      </form>
     </div>
-    <input id= "searchText" type="text" name="term" value="">
-    <button id="search" type="button" name="button">search</button>
     <script src="default.js" charset="utf-8"></script>
   </body>
 </html>
