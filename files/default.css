@@ -1,6 +1,6 @@
 .img {
   position: relative;
-  margin-left: 0px;
+  margin-left: -10px;
   background-color: #263441;
 }
 
@@ -18,6 +18,9 @@
   background-color: #263441;
 }
 
-.imgWidth {
+
+#top-bar {
   width: 1440px;
+  margin-left: -10px;
+
 }
