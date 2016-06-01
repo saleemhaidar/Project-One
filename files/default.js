@@ -1,5 +1,5 @@
 var items = [
-  {name: 'Nike Barricade', price:150},
+  {name: 'Nike Barricade', price:150,},
   {name: 'Harry Potter', price: 25},
   {name: 'Hot Wheels Cars', price: 12}
 ];
@@ -15,7 +15,7 @@ myButton.addEventListener('click', function() {
 function match(searchText, list) {
   var suggestions = [];
   list.forEach( function(item){
-    if(item.name.indexOf(searchText) !== -1) {
+    if(item.name.toUpperCase().indexOf(searchText.toUpperCase()) !== -1) {
     suggestions.push(item);
     }
   });
@@ -31,13 +31,13 @@ function match(searchText, list) {
 
  function item(data) {
    var container = document.createElement('div');
-   container.setAttribute('class', 'col-md-2 panel panel-default');
+   container.setAttribute('class', 'col-md-6 col-md-offset-3 panel panel-default');
 
    var item = document.createElement('div');
    item.setAttribute('class', 'panel-body');
 
   var name = document.createElement('h3');
-  name.textContent = data.name;
+  name.textContent = data.name + ' ' + '$' + data.price;
 
   container.appendChild(item);
   item.appendChild(name);

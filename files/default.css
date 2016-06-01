@@ -1,11 +1,9 @@
 .img {
-  position: relative;
   margin-left: -10px;
   background-color: #263441;
 }
 
 .searchBar {
-  position: relative;
   left: -140px;
   top: -60px;
 }
