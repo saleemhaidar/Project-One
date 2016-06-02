@@ -1,7 +1,7 @@
 var items = [
-  {name: 'Nike Barricade', image: 'images/adidasbarricade2016.jpg', price:150,},
-  {name: 'Harry Potter', image: 'images/HarryPotter.jpg', price: 25},
-  {name: 'Hot Wheels Cars', image: 'images/HotWheels.jpeg', price: 12}
+  {id: 1, name: 'Nike Barricade', image: 'images/adidasbarricade2016.jpg', price:150,},
+  {id: 2, name: 'Harry Potter', image: 'images/HarryPotter.jpg', price: 25},
+  {id: 3, name: 'Hot Wheels Cars', image: 'images/HotWheels.jpeg', price: 12}
 ];
 
 var myButton = document.getElementById('search');
@@ -59,8 +59,16 @@ function match(searchText, list) {
     image.setAttribute('src', data.image);
     image.setAttribute('class', 'img-responsive col-md-4')
   }
+
+  var addToCart = document.createElement('button');
+  addToCart.setAttribute('id', data.id);
+  addToCart.setAttribute('class', 'btn btn-default');
+  addToCart.textContent = "Add To Cart";
+
+
   container.appendChild(item);
   item.appendChild(name);
+  item.appendChild(addToCart);
   if (image) item.appendChild(image);
   return container;
 }
