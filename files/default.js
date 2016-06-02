@@ -60,6 +60,9 @@ function match(searchText, list) {
     image.setAttribute('class', 'img-responsive col-md-4')
   }
 
+  var footer = document.createElement('div');
+  footer.setAttribute('class', 'panel-footer panel-default');
+
   var addToCart = document.createElement('button');
   addToCart.setAttribute('id', data.id);
   addToCart.setAttribute('class', 'btn btn-default');
@@ -68,7 +71,8 @@ function match(searchText, list) {
 
   container.appendChild(item);
   item.appendChild(name);
-  item.appendChild(addToCart);
   if (image) item.appendChild(image);
+  footer.appendChild(addToCart);
+  container.appendChild(footer);
   return container;
 }
