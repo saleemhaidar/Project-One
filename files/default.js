@@ -7,11 +7,19 @@ var items = [
 var myButton = document.getElementById('search');
 myButton.addEventListener('click', function() {
   var searchText = document.getElementById('searchText');
+  clear(document.getElementById('searchResult'));
   show(match(searchText.value, items));
 });
 
+var enterkey = document.getElementById('searchText');
+enterkey.addEventListener('keypress', function(theEvent){
+  if (theEvent.keyCode == 13){
+  var searchText = document.getElementById('searchText');
+  clear(document.getElementById('searchResult'));
+  show(match(searchText.value, items));
+}
+});
 
-// push to issue before moving on to match function.
 function match(searchText, list) {
   var suggestions = [];
   list.forEach( function(item){
@@ -28,10 +36,15 @@ function match(searchText, list) {
      searchResult.appendChild(item(items[i]));
    }
  }
+ function clear(area) {
+   while (area.firstChild) {
+     area.removeChild(area.firstChild);
+   }
+ }
 
  function item(data) {
    var container = document.createElement('div');
-   container.setAttribute('class', 'col-md-6 col-md-offset-3 panel panel-default');
+   container.setAttribute('class', 'col-md-4 col-md-offset-4 panel panel-default');
 
    var item = document.createElement('div');
    item.setAttribute('class', 'panel-body');
