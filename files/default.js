@@ -13,6 +13,7 @@ myButton.addEventListener('click', function() {
 
 var enterkey = document.getElementById('searchText');
 enterkey.addEventListener('keypress', function(theEvent){
+  // theEvent.preventDefault();
   if (theEvent.keyCode == 13){
   var searchText = document.getElementById('searchText');
   clear(document.getElementById('searchResult'));
@@ -20,6 +21,7 @@ enterkey.addEventListener('keypress', function(theEvent){
 }
 });
 
+// push to issue before moving on to match function.
 function match(searchText, list) {
   var suggestions = [];
   list.forEach( function(item){
