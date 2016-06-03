@@ -110,10 +110,3 @@ function swap(next, location){
   next.classList.add('current');
   next.classList.remove('hide');
 };
-
-var myCart = document.getElementById('cartIcon');
-myCart.addEventListener('click', function(theEvent){
-var cart =  document.getElementById('Cart');
-var view = document.getElementsByClassName('view')[0];
-  swap(cart, view)
-});
