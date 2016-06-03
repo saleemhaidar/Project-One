@@ -25,6 +25,11 @@ enterkey.addEventListener('keypress', function(theEvent){
 }
 });
 
+var goToCart =document.getElementById('cartIcon');
+goToCart.addEventListener('click', function(){
+
+})
+
 // push to issue before moving on to match function.
 function match(searchText, list) {
   var suggestions = [];
@@ -94,7 +99,21 @@ function add(itemId, items) {
     if (items[i].id == itemId) {
       cart.items.push(items[i]);
       document.getElementById('counter').textContent++;
-      console.log(cart.items)
     }
   }
 }
+function swap(next, location){
+  var old = document.getElementsByClassName('current')[0];
+  old.classList.remove('current');
+  old.classList.add('hide');
+  location.appendChild(next);
+  next.classList.add('current');
+  next.classList.remove('hide');
+};
+
+var myCart = document.getElementById('cartIcon');
+myCart.addEventListener('click', function(theEvent){
+var cart =  document.getElementById('Cart');
+var view = document.getElementsByClassName('view')[0];
+  swap(cart, view)
+});
