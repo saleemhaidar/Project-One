@@ -4,6 +4,10 @@ var items = [
   {id: 3, name: 'Hot Wheels Cars', image: 'images/HotWheels.jpeg', price: 12}
 ];
 
+var cart = {
+  items: []
+}
+
 var myButton = document.getElementById('search');
 myButton.addEventListener('click', function() {
   var searchText = document.getElementById('searchText');
@@ -46,7 +50,10 @@ function match(searchText, list) {
 
  function item(data) {
    var container = document.createElement('div');
-   container.setAttribute('class', 'col-md-4 col-md-offset-4 panel panel-default');
+   container.setAttribute('class', 'col-md-4 col-md-offset-4');
+
+   var subContainer = document.createElement('div');
+   subContainer.setAttribute('class', 'panel panel-default');
 
    var item = document.createElement('div');
    item.setAttribute('class', 'panel-body');
@@ -68,11 +75,26 @@ function match(searchText, list) {
   addToCart.setAttribute('class', 'btn btn-default');
   addToCart.textContent = "Add To Cart";
 
+  addToCart.addEventListener('click', function(theEvent) {
+    add(data.id, items)
 
-  container.appendChild(item);
+  });
+
+  container.appendChild(subContainer);
+  subContainer.appendChild(item);
   item.appendChild(name);
   if (image) item.appendChild(image);
   footer.appendChild(addToCart);
-  container.appendChild(footer);
+  subContainer.appendChild(footer);
   return container;
+}
+
+function add(itemId, items) {
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].id == itemId) {
+      cart.items.push(items[i]);
+      document.getElementById('counter').textContent++;
+      console.log(cart.items)
+    }
+  }
 }
