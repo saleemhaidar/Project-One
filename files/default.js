@@ -60,6 +60,9 @@ function match(searchText, list) {
    var detailBox = document.createElement('div');
    detailBox.setAttribute('clss', 'col-md-4 col-md-offset-4');
 
+   var removeIcon = document.createElement('i');
+   removeIcon.setAttribute('class', 'glyphicon glyphicon-remove pull-right')
+
    var subBox = document.createElement('div');
    subBox.setAttribute('class', 'panel panel-default')
 
@@ -69,11 +72,9 @@ function match(searchText, list) {
    var name = document.createElement('h3');
    name.textContent = details.name + ' ' + '$' + details.price;
 
-   if (details.image) {
      var image = document.createElement('img');
      image.setAttribute('src', details.image);
      image.setAttribute('class', 'img-responsive col-md-4');
-   }
 
    var footer = document.createElement('div');
    footer.setAttribute('class', 'panel-footer panel-default');
@@ -82,13 +83,19 @@ function match(searchText, list) {
    buy.setAttribute('class', 'btn btn-default');
    buy.textContent = "Proceed With Purchase";
 
+   var removeButton = document.createElement('button');
+   removeButton.setAttribute('class', 'btn btn-warning pull-right')
+  //  removeButton.textContent = "Remove"
+
    cartBody.appendChild(detailBox);
    detailBox.appendChild(subBox);
+   subBox.appendChild(removeButton);
    subBox.appendChild(item);
    item.appendChild(name);
    if(image) item.appendChild(image);
    subBox.appendChild(footer);
    footer.appendChild(buy);
+   removeButton.appendChild(removeIcon);
  }
 
  function item(data) {
