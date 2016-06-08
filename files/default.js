@@ -7,6 +7,11 @@ var items = [
 var cart = {
   items: []
 }
+// var removeClick =document.getElementById('theRemove');
+// removeClick.addEventListener('click', function() {
+// });
+
+
 
 var myButton = document.getElementById('search');
 myButton.addEventListener('click', function() {
@@ -22,16 +27,21 @@ enterkey.addEventListener('keypress', function(theEvent){
   if (theEvent.keyCode == 13){
   var searchText = document.getElementById('searchText');
   var view = document.getElementsByClassName('view')[0];
+  swap(searchResult, view);
   clear(document.getElementById('searchResult'));
   show(match(searchText.value, items));
-  swap(searchResult, view);
 }
 });
 
 var goToCart =document.getElementById('cartIcon');
 goToCart.addEventListener('click', function(){
 
-})
+
+});
+
+// function removeFirst(itemInCart) {
+//   cart.splice(0, 1)
+// }
 
 function match(searchText, list) {
   var suggestions = [];
@@ -58,13 +68,14 @@ function match(searchText, list) {
  function cartItem(details){
    var cartBody = document.getElementById('Cart')
    var detailBox = document.createElement('div');
-   detailBox.setAttribute('clss', 'col-md-4 col-md-offset-4');
+   detailBox.setAttribute('class', '');
 
    var removeIcon = document.createElement('i');
-   removeIcon.setAttribute('class', 'glyphicon glyphicon-remove pull-right')
+   removeIcon.setAttribute('data-id', details.id);
+   removeIcon.setAttribute('class', 'glyphicon glyphicon-remove pull-right rIcon')
 
    var subBox = document.createElement('div');
-   subBox.setAttribute('class', 'panel panel-default')
+   subBox.setAttribute('class', 'panel panel-default subBoxitem')
 
    var item = document.createElement('div');
    item.setAttribute('class', 'panel-body');
@@ -84,8 +95,9 @@ function match(searchText, list) {
    buy.textContent = "Proceed With Purchase";
 
    var removeButton = document.createElement('button');
-   removeButton.setAttribute('class', 'btn btn-warning pull-right')
-  //  removeButton.textContent = "Remove"
+   removeButton.setAttribute('class', 'btn btn-warning pull-right');
+   removeButton.setAttribute('id', 'theRemove');
+
 
    cartBody.appendChild(detailBox);
    detailBox.appendChild(subBox);
@@ -96,6 +108,24 @@ function match(searchText, list) {
    subBox.appendChild(footer);
    footer.appendChild(buy);
    removeButton.appendChild(removeIcon);
+
+   removeIcon.addEventListener('click', function(theEvent) {
+     var index = theEvent.target.getAttribute('data-id');
+     var theKey = null;
+     for (var i = 0; i < cart.items.length; i++) {
+       if (items[i].id == index) {
+         theKey = i;
+         break;
+       }
+     }
+     cart.items.splice(theKey, 1);
+     clear(detailBox);
+
+     var badge = document.getElementById('counter');
+     if(badge.textContent > 0) {
+       badge.textContent--
+     }
+   });
  }
 
  function item(data) {
@@ -112,9 +142,9 @@ function match(searchText, list) {
   name.textContent = data.name + ' ' + '$' + data.price;
 
 
-    var image = document.createElement('img');
-    image.setAttribute('src', data.image);
-    image.setAttribute('class', 'img-responsive col-md-4')
+  var image = document.createElement('img');
+  image.setAttribute('src', data.image);
+  image.setAttribute('class', 'img-responsive col-md-4')
 
 
   var footer = document.createElement('div');
@@ -165,3 +195,11 @@ var view = document.getElementsByClassName('view')[0];
     cartItem(cart.items[i]);
   }
 });
+// function removeFirst(itemInCart) {
+//   var spliceFirst = cart.items.splice(0, 1);
+//   for (var i = 0; i < cart.items.length; i++) {
+//     array[i]
+//
+//   spliceFirst(cart[i]);
+//   }
+// }
