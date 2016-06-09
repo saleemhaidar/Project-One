@@ -1,47 +1,39 @@
 var items = [
-  {id: 1, name: 'Nike Barricade', image: 'images/adidasbarricade2016.jpg', price:150,},
-  {id: 2, name: 'Harry Potter', image: 'images/HarryPotter.jpg', price: 25},
-  {id: 3, name: 'Hot Wheels Cars', image: 'images/HotWheels.jpeg', price: 12}
+  {id: 1, name: 'Nike Barricade', image: 'images/adidasbarricade2016.jpg', price:150, count:1},
+  {id: 2, name: 'Harry Potter', image: 'images/HarryPotter.jpg', price: 25, count:1},
+  {id: 3, name: 'Hot Wheels Cars', image: 'images/HotWheels.jpeg', price: 12, count:1}
 ];
 
 var cart = {
   items: []
 }
-// var removeClick =document.getElementById('theRemove');
-// removeClick.addEventListener('click', function() {
-// });
 
-
-
-var myButton = document.getElementById('search');
-myButton.addEventListener('click', function() {
-  var searchText = document.getElementById('searchText');
-  var view = document.getElementsByClassName('view')[0];
-  swap(searchResult, view);
-  clear(document.getElementById('searchResult'));
-  show(match(searchText.value, items));
-});
-
-var enterkey = document.getElementById('searchText');
-enterkey.addEventListener('keypress', function(theEvent){
-  if (theEvent.keyCode == 13){
-  var searchText = document.getElementById('searchText');
-  var view = document.getElementsByClassName('view')[0];
-  swap(searchResult, view);
-  clear(document.getElementById('searchResult'));
-  show(match(searchText.value, items));
+function add(item) {
+    // if the cart already has this type of item
+    if (cart.items.includes(item)) {
+      // if the item count will be greater than five then do nothing
+      if ((item.count + 1) > 5) {
+        alert("this is too many items");
+        return;
+      // otherwise add an item
+      } else {
+        item.count++;
+      }
+    // otherwise add the item for the first time
+    } else {
+      cart.items.push(item);
+    }
+    document.getElementById('counter').textContent++;
 }
-});
 
-var goToCart =document.getElementById('cartIcon');
-goToCart.addEventListener('click', function(){
-
-
-});
-
-// function removeFirst(itemInCart) {
-//   cart.splice(0, 1)
-// }
+function swap(next, location){
+  var old = document.getElementsByClassName('current')[0];
+  old.classList.remove('current');
+  old.classList.add('hide');
+  location.appendChild(next);
+  next.classList.add('current');
+  next.classList.remove('hide');
+};
 
 function match(searchText, list) {
   var suggestions = [];
@@ -60,6 +52,7 @@ function match(searchText, list) {
    }
  }
  function clear(area) {
+
    while (area.firstChild) {
      area.removeChild(area.firstChild);
    }
@@ -68,11 +61,7 @@ function match(searchText, list) {
  function cartItem(details){
    var cartBody = document.getElementById('Cart')
    var detailBox = document.createElement('div');
-   detailBox.setAttribute('class', '');
-
-   var removeIcon = document.createElement('i');
-   removeIcon.setAttribute('data-id', details.id);
-   removeIcon.setAttribute('class', 'glyphicon glyphicon-remove pull-right rIcon')
+   detailBox.setAttribute('class', 'theItem');
 
    var subBox = document.createElement('div');
    subBox.setAttribute('class', 'panel panel-default subBoxitem')
@@ -81,33 +70,39 @@ function match(searchText, list) {
    item.setAttribute('class', 'panel-body');
 
    var name = document.createElement('h3');
-   name.textContent = details.name + ' ' + '$' + details.price;
+   name.textContent = details.name + ' ' + '$' + details.price //+ ' ' + details.count;
 
-     var image = document.createElement('img');
-     image.setAttribute('src', details.image);
-     image.setAttribute('class', 'img-responsive col-md-4');
+   var image = document.createElement('img');
+   image.setAttribute('src', details.image);
+   image.setAttribute('class', 'img-responsive col-md-4');
 
-   var footer = document.createElement('div');
-   footer.setAttribute('class', 'panel-footer panel-default');
+   var removeIcon = document.createElement('i');
+   removeIcon.setAttribute('data-id', details.id);
+   removeIcon.setAttribute('class', 'glyphicon glyphicon-remove pull-right rIcon')
 
-   var buy = document.createElement('button');
-   buy.setAttribute('class', 'btn btn-default');
-   buy.textContent = "Proceed With Purchase";
-
-   var removeButton = document.createElement('button');
-   removeButton.setAttribute('class', 'btn btn-warning pull-right');
-   removeButton.setAttribute('id', 'theRemove');
-
+   var selectBox = document.createElement('select');
+   selectBox.setAttribute('class', 'theSelect' );
+   for (var i = 1; i < 6; i++) {
+     var myOption = document.createElement('option');
+     if (details.count == i) {
+       myOption.setAttribute('selected', 'true');
+       //the 'selected' attribute is not a class and it has to be true in this case.
+     }
+     myOption.value = i;
+     myOption.text = i;
+     selectBox.appendChild(myOption);
+    //  appendChild inside the loop.
+   }
 
    cartBody.appendChild(detailBox);
    detailBox.appendChild(subBox);
-   subBox.appendChild(removeButton);
+   item.appendChild(removeIcon);
+  //  subBox.appendChild(removeButton);
    subBox.appendChild(item);
    item.appendChild(name);
-   if(image) item.appendChild(image);
-   subBox.appendChild(footer);
-   footer.appendChild(buy);
-   removeButton.appendChild(removeIcon);
+   item.appendChild(image);
+   item.appendChild(selectBox);
+   selectBox.appendChild(myOption);
 
    removeIcon.addEventListener('click', function(theEvent) {
      var index = theEvent.target.getAttribute('data-id');
@@ -156,8 +151,7 @@ function match(searchText, list) {
   addToCart.textContent = "Add To Cart";
 
   addToCart.addEventListener('click', function(theEvent) {
-    add(data.id, items);
-
+    add(data);
   });
 
   container.appendChild(subContainer);
@@ -169,37 +163,40 @@ function match(searchText, list) {
   return container;
 }
 
-function add(itemId, items) {
-  for (var i = 0; i < items.length; i++) {
-    if (items[i].id == itemId) {
-      cart.items.push(items[i]);
-      document.getElementById('counter').textContent++;
-    }
-  }
-}
-function swap(next, location){
-  var old = document.getElementsByClassName('current')[0];
-  old.classList.remove('current');
-  old.classList.add('hide');
-  location.appendChild(next);
-  next.classList.add('current');
-  next.classList.remove('hide');
-};
+var myButton = document.getElementById('search');
+myButton.addEventListener('click', function() {
+  var searchText = document.getElementById('searchText');
+  var view = document.getElementsByClassName('view')[0];
+  swap(searchResult, view);
+  clear(document.getElementById('searchResult'));
+  show(match(searchText.value, items));
+});
 
+var enterkey = document.getElementById('searchText');
+enterkey.addEventListener('keypress', function(theEvent){
+  if (theEvent.keyCode == 13){
+  var searchText = document.getElementById('searchText');
+  var view = document.getElementsByClassName('view')[0];
+  swap(searchResult, view);
+  clear(document.getElementById('searchResult'));
+  show(match(searchText.value, items));
+}
+});
+
+var cartActive = false;
 var myCart = document.getElementById('cartIcon');
 myCart.addEventListener('click', function(theEvent){
-var theCart =  document.getElementById('Cart');
-var view = document.getElementsByClassName('view')[0];
-  swap(theCart, view);
-  for (var i = 0; i < cart.items.length; i++) {
-    cartItem(cart.items[i]);
+  if (!cartActive) {
+    var theCart =  document.getElementById('Cart');
+    var view = document.getElementsByClassName('view')[0];
+    var items = document.getElementsByClassName('theItem');
+    while (items[0]) {
+      items[0].parentNode.removeChild(items[0]);
+    }
+
+    swap(theCart, view);
+    for (var i = 0; i < cart.items.length; i++) {
+      cartItem(cart.items[i]);
+    }
   }
 });
-// function removeFirst(itemInCart) {
-//   var spliceFirst = cart.items.splice(0, 1);
-//   for (var i = 0; i < cart.items.length; i++) {
-//     array[i]
-//
-//   spliceFirst(cart[i]);
-//   }
-// }
