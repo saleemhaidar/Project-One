@@ -1,7 +1,8 @@
 var items = [
-  {id: 1, name: 'Nike Barricade', image: 'images/adidasbarricade2016.jpg', price:150, count:1},
-  {id: 2, name: 'Harry Potter', image: 'images/HarryPotter.jpg', price: 25, count:1},
-  {id: 3, name: 'Hot Wheels Cars', image: 'images/HotWheels.jpeg', price: 12, count:1}
+  {id: 1, name: 'Nike Barricade', image: 'images/adidasbarricade2016.jpg', price: 150, count: 1},
+  {id: 2, name: 'Harry Potter', image: 'images/HarryPotter.jpg', price: 25, count: 1},
+  {id: 3, name: 'Hot Wheels Cars', image: 'images/HotWheels.jpeg', price: 12, count: 1},
+  {id: 4, name: 'blah blah', image: 'images/HarryPotter.jpg', price: 3, count: 1}
 ];
 
 var cart = {
@@ -58,71 +59,6 @@ function match(searchText, list) {
    }
  }
 
- function cartItem(details){
-   var cartBody = document.getElementById('Cart')
-   var detailBox = document.createElement('div');
-   detailBox.setAttribute('class', 'theItem');
-
-   var subBox = document.createElement('div');
-   subBox.setAttribute('class', 'panel panel-default subBoxitem')
-
-   var item = document.createElement('div');
-   item.setAttribute('class', 'panel-body');
-
-   var name = document.createElement('h3');
-   name.textContent = details.name + ' ' + '$' + details.price //+ ' ' + details.count;
-
-   var image = document.createElement('img');
-   image.setAttribute('src', details.image);
-   image.setAttribute('class', 'img-responsive col-md-4');
-
-   var removeIcon = document.createElement('i');
-   removeIcon.setAttribute('data-id', details.id);
-   removeIcon.setAttribute('class', 'glyphicon glyphicon-remove pull-right rIcon')
-
-   var selectBox = document.createElement('select');
-   selectBox.setAttribute('class', 'theSelect' );
-   for (var i = 1; i < 6; i++) {
-     var myOption = document.createElement('option');
-     if (details.count == i) {
-       myOption.setAttribute('selected', 'true');
-       //the 'selected' attribute is not a class and it has to be true in this case.
-     }
-     myOption.value = i;
-     myOption.text = i;
-     selectBox.appendChild(myOption);
-    //  appendChild inside the loop.
-   }
-
-   cartBody.appendChild(detailBox);
-   detailBox.appendChild(subBox);
-   item.appendChild(removeIcon);
-  //  subBox.appendChild(removeButton);
-   subBox.appendChild(item);
-   item.appendChild(name);
-   item.appendChild(image);
-   item.appendChild(selectBox);
-   selectBox.appendChild(myOption);
-
-   removeIcon.addEventListener('click', function(theEvent) {
-     var index = theEvent.target.getAttribute('data-id');
-     var theKey = null;
-     for (var i = 0; i < cart.items.length; i++) {
-       if (items[i].id == index) {
-         theKey = i;
-         break;
-       }
-     }
-     cart.items.splice(theKey, 1);
-     clear(detailBox);
-
-     var badge = document.getElementById('counter');
-     if(badge.textContent > 0) {
-       badge.textContent--
-     }
-   });
- }
-
  function item(data) {
    var container = document.createElement('div');
    container.setAttribute('class', 'col-md-4 col-md-offset-4');
@@ -161,6 +97,75 @@ function match(searchText, list) {
   footer.appendChild(addToCart);
   subContainer.appendChild(footer);
   return container;
+}
+
+function cartItem(details){
+  var cartBody = document.getElementById('Cart')
+  var detailBox = document.createElement('div');
+  detailBox.setAttribute('class', 'theItem');
+
+  var subBox = document.createElement('div');
+  subBox.setAttribute('class', 'panel panel-default subBoxitem')
+
+  var item = document.createElement('div');
+  item.setAttribute('class', 'panel-body');
+
+  var name = document.createElement('h3');
+  name.textContent = details.name + ' ' + '$' + details.price //+ ' ' + details.count;
+
+  var image = document.createElement('img');
+  image.setAttribute('src', details.image);
+  image.setAttribute('class', 'img-responsive col-md-4');
+
+  var removeIcon = document.createElement('i');
+  removeIcon.setAttribute('data-id', details.id);
+  removeIcon.setAttribute('class', 'glyphicon glyphicon-remove pull-right rIcon')
+
+  var selectBox = document.createElement('select');
+  selectBox.setAttribute('class', 'theSelect' );
+  for (var i = 1; i < 6; i++) {
+    var myOption = document.createElement('option');
+    if (details.count == i) {
+      myOption.setAttribute('selected', 'true');
+      //the 'selected' attribute is not a class and it has to be true in this case.
+    }
+    myOption.value = i;
+    myOption.text = i;
+    selectBox.appendChild(myOption);
+   //  appendChild inside the loop.
+  }
+
+  cartBody.appendChild(detailBox);
+  detailBox.appendChild(subBox);
+  item.appendChild(removeIcon);
+ //  subBox.appendChild(removeButton);
+  subBox.appendChild(item);
+  item.appendChild(name);
+  item.appendChild(image);
+  item.appendChild(selectBox);
+  selectBox.appendChild(myOption);
+
+  removeIcon.addEventListener('click', function(theEvent) {
+    var index = theEvent.target.getAttribute('data-id');
+    var theKey = null;
+    for (var i = 0; i < cart.items.length; i++) {
+      if (items[i].id == index) {
+        theKey = i;
+        console.log(theKey)
+        break;
+      }
+    }
+
+    var quantity = cart.items[theKey].count;
+    console.log(cart.items[theKey].count)
+    cart.items.splice(theKey, 1);
+    clear(detailBox);
+
+    var badge = document.getElementById('counter');
+    if(badge.textContent > 0) {
+      badge.textContent -= quantity;
+    }
+  });
 }
 
 var myButton = document.getElementById('search');
