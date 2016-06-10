@@ -9,21 +9,21 @@ var cart = {
 }
 
 function add(item) {
-    // if the cart already has this type of item
-    if (cart.items.includes(item)) {
-      // if the item count will be greater than five then do nothing
-      if ((item.count + 1) > 5) {
-        alert("this is too many items");
-        return;
+  // if the cart already has this type of item
+  if (cart.items.includes(item)) {
+    // if the item count will be greater than five then do nothing
+    if ((item.count + 1) > 5) {
+      alert("this is too many items");
+      return;
       // otherwise add an item
-      } else {
-        item.count++;
-      }
-    // otherwise add the item for the first time
     } else {
-      cart.items.push(item);
+      item.count++;
     }
-    document.getElementById('counter').textContent++;
+    // otherwise add the item for the first time
+  } else {
+    cart.items.push(item);
+  }
+  document.getElementById('counter').textContent++;
 }
 
 function swap(next, location){
@@ -39,56 +39,79 @@ function match(searchText, list) {
   var suggestions = [];
   list.forEach( function(item){
     if(item.name.toUpperCase().indexOf(searchText.toUpperCase()) !== -1) {
-    suggestions.push(item);
+      suggestions.push(item);
     }
   });
   return suggestions;
 }
 
- function show(items) {
-   var searchResult = document.getElementById('searchResult');
-   for (var i = 0; i < items.length; i++) {
-     searchResult.appendChild(item(items[i]));
-   }
- }
- function clear(area) {
+function show(items) {
+  var searchResult = document.getElementById('searchResult');
+  for (var i = 0; i < items.length; i++) {
+    searchResult.appendChild(item(items[i]));
+  }
+}
+function clear(area) {
 
-   while (area.firstChild) {
-     area.removeChild(area.firstChild);
-   }
- }
+  while (area.firstChild) {
+    area.removeChild(area.firstChild);
+  }
+}
 
- function findItemById(items, itemId) {
- for (var i = 0; i < items.length; i++) {
-   if (items[i].id == itemId) {
-     return items[i];
-     }
-   }
- }
+function findItemById(items, itemId) {
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].id == itemId) {
+      return items[i];
+    }
+  }
+}
 
- function removeItemById(items, itemId) {
-   for (var i = 0; i < items.length; i++) {
-     if(items[i].id == itemId){
-     items.splice(i, 1);
+function removeItemById(items, itemId) {
+  for (var i = 0; i < items.length; i++) {
+    if(items[i].id == itemId){
+      items.splice(i, 1);
 
-   }
-   }
- }
+    }
+  }
+}
 
- function decrementBadge(badge, value){
-   badge.textContent -= value;
- }
+function incrementBadge(badge, value){
+  // parseInt treats text like a number
+  badge.textContent = parseInt(badge.textContent) + value;
+}
+
+function decrementBadge(badge, value){
+  badge.textContent -= value;
+}
+
+function increaseCount(items, id, number){
+  for (var i = 0; i < items.length; i++) {
+    if(items[i].id == id){
+      items[i].count += number;
+
+    }
+  }
+}
+
+function decreaseCount(items, id, number){
+  for (var i = 0; i < items.length; i++) {
+    if(items[i].id == id){
+      items[i].count -= number;
+    }
+  }
+}
 
 
- function item(data) {
-   var container = document.createElement('div');
-   container.setAttribute('class', 'col-md-4 col-md-offset-4');
 
-   var subContainer = document.createElement('div');
-   subContainer.setAttribute('class', 'panel panel-default');
+function item(data) {
+  var container = document.createElement('div');
+  container.setAttribute('class', 'col-md-4 col-md-offset-4');
 
-   var item = document.createElement('div');
-   item.setAttribute('class', 'panel-body');
+  var subContainer = document.createElement('div');
+  subContainer.setAttribute('class', 'panel panel-default');
+
+  var item = document.createElement('div');
+  item.setAttribute('class', 'panel-body');
 
   var name = document.createElement('h3');
   name.textContent = data.name + ' ' + '$' + data.price;
@@ -143,6 +166,7 @@ function cartItem(details){
   removeIcon.setAttribute('class', 'glyphicon glyphicon-remove pull-right rIcon')
 
   var selectBox = document.createElement('select');
+  selectBox.setAttribute('data-id', details.id)
   selectBox.setAttribute('class', 'theSelect' );
   for (var i = 1; i < 6; i++) {
     var myOption = document.createElement('option');
@@ -152,28 +176,40 @@ function cartItem(details){
     myOption.value = i;
     myOption.text = i;
     selectBox.appendChild(myOption);
-   //  appendChild inside the loop.
+    //  appendChild inside the loop.
   }
 
   cartBody.appendChild(detailBox);
   detailBox.appendChild(subBox);
   item.appendChild(removeIcon);
- //  subBox.appendChild(removeButton);
+  //  subBox.appendChild(removeButton);
   subBox.appendChild(item);
   item.appendChild(name);
   item.appendChild(image);
   item.appendChild(selectBox);
   selectBox.appendChild(myOption);
-//remove the item when the removeIcon is clicked
   removeIcon.addEventListener('click', function(theEvent) {
-    //find the the attribute data-id and store it in index.
     var id = theEvent.target.getAttribute('data-id');
     var quantity = findItemById(cart.items, id).count
     removeItemById(cart.items, id);
     decrementBadge(document.getElementById('counter'), quantity);
-
     clear(detailBox);
 
+
+  });
+  // var theSelection = document.getElementsByClassName('theSelect')
+  selectBox.addEventListener('change', function(theEvent){
+    var id = theEvent.target.getAttribute('data-id')
+    var newValue = theEvent.target.value;
+    var oldValue = findItemById(cart.items, id).count;
+    if(newValue > oldValue) {
+      increaseCount(cart.items, id, (newValue - oldValue));
+      incrementBadge(document.getElementById('counter'), (newValue - oldValue));
+    }
+    if(oldValue > newValue) {
+      decreaseCount(cart.items, id, (oldValue - newValue))
+      decrementBadge(document.getElementById('counter'), (oldValue - newValue));
+    }
   });
 }
 
@@ -189,12 +225,12 @@ myButton.addEventListener('click', function() {
 var enterkey = document.getElementById('searchText');
 enterkey.addEventListener('keypress', function(theEvent){
   if (theEvent.keyCode == 13){
-  var searchText = document.getElementById('searchText');
-  var view = document.getElementsByClassName('view')[0];
-  swap(searchResult, view);
-  clear(document.getElementById('searchResult'));
-  show(match(searchText.value, items));
-}
+    var searchText = document.getElementById('searchText');
+    var view = document.getElementsByClassName('view')[0];
+    swap(searchResult, view);
+    clear(document.getElementById('searchResult'));
+    show(match(searchText.value, items));
+  }
 });
 
 var cartActive = false;
