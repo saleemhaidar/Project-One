@@ -2,7 +2,6 @@ var items = [
   {id: 1, name: 'Nike Barricade', image: 'images/adidasbarricade2016.jpg', price: 150, count: 1},
   {id: 2, name: 'Harry Potter', image: 'images/HarryPotter.jpg', price: 25, count: 1},
   {id: 3, name: 'Hot Wheels Cars', image: 'images/HotWheels.jpeg', price: 12, count: 1},
-  {id: 4, name: 'blah blah', image: 'images/HarryPotter.jpg', price: 3, count: 1}
 ];
 
 var cart = {
@@ -58,6 +57,28 @@ function match(searchText, list) {
      area.removeChild(area.firstChild);
    }
  }
+
+ function findItemById(items, itemId) {
+ for (var i = 0; i < items.length; i++) {
+   if (items[i].id == itemId) {
+     return items[i];
+     }
+   }
+ }
+
+ function removeItemById(items, itemId) {
+   for (var i = 0; i < items.length; i++) {
+     if(items[i].id == itemId){
+     items.splice(i, 1);
+
+   }
+   }
+ }
+
+ function decrementBadge(badge, value){
+   badge.textContent -= value;
+ }
+
 
  function item(data) {
    var container = document.createElement('div');
@@ -127,7 +148,6 @@ function cartItem(details){
     var myOption = document.createElement('option');
     if (details.count == i) {
       myOption.setAttribute('selected', 'true');
-      //the 'selected' attribute is not a class and it has to be true in this case.
     }
     myOption.value = i;
     myOption.text = i;
@@ -144,27 +164,16 @@ function cartItem(details){
   item.appendChild(image);
   item.appendChild(selectBox);
   selectBox.appendChild(myOption);
-
+//remove the item when the removeIcon is clicked
   removeIcon.addEventListener('click', function(theEvent) {
-    var index = theEvent.target.getAttribute('data-id');
-    var theKey = null;
-    for (var i = 0; i < cart.items.length; i++) {
-      if (items[i].id == index) {
-        theKey = i;
-        console.log(theKey)
-        break;
-      }
-    }
+    //find the the attribute data-id and store it in index.
+    var id = theEvent.target.getAttribute('data-id');
+    var quantity = findItemById(cart.items, id).count
+    removeItemById(cart.items, id);
+    decrementBadge(document.getElementById('counter'), quantity);
 
-    var quantity = cart.items[theKey].count;
-    console.log(cart.items[theKey].count)
-    cart.items.splice(theKey, 1);
     clear(detailBox);
 
-    var badge = document.getElementById('counter');
-    if(badge.textContent > 0) {
-      badge.textContent -= quantity;
-    }
   });
 }
 
